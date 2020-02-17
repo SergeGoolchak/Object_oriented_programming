@@ -238,7 +238,7 @@ class LinkedList:
             """
             :return: Next Node
             """
-            return self.__next if self.__next is not None else None
+            return self.__next
 
         @next_.setter
         def next_(self, node):
@@ -256,7 +256,7 @@ class LinkedList:
             """
             :return: previous Node
             """
-            return self.__prev if self.__prev is not None else None
+            return self.__prev
 
         @prev.setter
         def prev(self, node):
@@ -267,7 +267,7 @@ class LinkedList:
             """
             if node is not None and not isinstance(node, type(self)):
                 raise TypeError('node must be Node or None')
-            self.__prev = node if node is not None else None
+            self.__prev = node
 
         def __str__(self):
             return f'{self.value}'
@@ -353,21 +353,26 @@ class LinkedList:
         current_node.next_.prev = current_node.prev
         return current_node
 
-    def delete(self, value):
+    def delete(self, index = 0):
         """
         The method delete the link on the node and node.
         :param value: The value of deleted node.
         """
-        current_node = self.find(value)
-        if current_node == None:
-            raise Exception("Node with that value does not exist")
-        current_node.prev.next_ = current_node.next_
-        current_node.next_.prev = current_node.prev
+        current_node = self.head
+        for _ in range(index+1):
+            current_node = current_node.next_
+        if not current_node.prev:
+            self.head.next_ = current_node.next_
+            current_node.next_.prev = current_node.prev
+        else:
+            current_node.prev.next_ = current_node.next_
+            current_node.next_.prev = current_node.prev
 
 
 if __name__ == '__main__':
     g = LinkedList()
     g.insert(7, 0)
+    print(g.head.next_)
     g.append(10)
     print(g.head.next_)
     print(g.head.next_.next_)
@@ -376,9 +381,9 @@ if __name__ == '__main__':
     print(g.tail.prev)
     print(g.find(10))
     print(repr(g.find(10)))
-    g.delete(7)
-    print(g.head.next_)
-    print(g.find(7))
+    g.delete(1)
+    print(g.head.next_.next_)
+    # print(g.find(7))
     g.clear()
     g.append("Yeeeeaaaah!!!")
     print(g.tail.prev)
