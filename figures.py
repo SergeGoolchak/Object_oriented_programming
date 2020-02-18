@@ -37,26 +37,10 @@ class Figure:
     
 class Rectangle(Figure):
     def __init__(self, x=0, y=0, w=0, h=0):
-        self.__x = x
-        self.__y = y
+        super().__init__(x, y)
         self.w = w
         self.h = h
 
-    @property
-    def x(self):
-        return self.__x
-
-    @x.setter
-    def x(self, x):
-        self.__x = x
-
-    @property
-    def y(self):
-        return self.__y
-
-    @y.setter
-    def y(self, y):
-        self.__y = y
 
     def perimeter(self):
         return 2*(self.w+self.h)
@@ -73,26 +57,9 @@ class Rectangle(Figure):
 
 class Ellipse(Figure):
     def __init__(self, x=0, y=0, w=0, h=0):
-        self.__x = x
-        self.__y = y
+        super().__init__(x, y)
         self.w = w
         self.h = h
-
-    @property
-    def x(self):
-        return self.__x
-
-    @x.setter
-    def x(self, x):
-        self.__x = x
-
-    @property
-    def y(self):
-        return self.__y
-
-    @y.setter
-    def y(self, y):
-        self.__y = y
 
     def perimeter(self):
         per = 4 * ((3.14 * (self.w / 2) * (self.h / 2) + ((self.w / 2) - (self.h / 2)) ** 2) / ((self.w / 2) + (self.h / 2)))
@@ -111,6 +78,7 @@ class Ellipse(Figure):
 
 class CloseFigure(Figure):
     def __init__(self, *args):
+        super().__init__(args[0], args[1])
         self.point = []
         for i in range(0, len(args) - 1, 2):
             self.point.append({'x': args[i], 'y': args[i+1]})
@@ -136,7 +104,7 @@ class CloseFigure(Figure):
         return res
 
     def width(self):
-        my_my_max = self.point[0]['x']
+        my_max = self.point[0]['x']
         my_min = self.point[0]['x']
         for i in range(len(self.point)):
             if self.point[i]['x'] > my_max:
