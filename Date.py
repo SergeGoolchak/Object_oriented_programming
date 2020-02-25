@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 # Слушатель (ФИО): Гульчак С.В.
-# In[ ]:
+
 
 
 # Разработка класса данных
@@ -49,10 +49,8 @@ class Date:
                 self.__month = d.month
                 self.__day = d.day
             else:
-                self.is_valid_date(args[0], args[1], args[2])
-                self.__year = args[0]
-                self.__month = args[1]
-                self.__day = args[2]
+                self.date = args
+
 
     def __str__(self):
         return self.date
@@ -85,14 +83,9 @@ class Date:
 
     @property
     def date(self):
-        if self.__month < 10 and self.__day < 10:
-            return f'0{self.__day}.0{self.__month}.{self.__year}'
-        elif self.__day < 10:
-            return f'0{self.__day}.{self.__month}.{self.__year}'
-        elif self.__month < 10:
-            return f'{self.__day}.0{self.__month}.{self.__year}'
-        else:
-            return f'{self.__day}.{self.__month}.{self.__year}'
+        d = '{:02}'.format(self.day)
+        m = '{:02}'.format(self.month)
+        return f'{d}.{m}.{self.__year}'
 
     @classmethod
     def is_valid_date(cls, year, month, day):
@@ -117,21 +110,29 @@ class Date:
             TypeError('Date must be str')
             ValueError('Invalid date format, example: 23.1.2020')
         """
-        if not isinstance(value, str):
-            raise TypeError('Date must be str')
-        value = value.split('.')
-        if len(value) != 3:
-            raise ValueError('Invalid date format, example: 23.1.2020')
-        try:
-            day = int(value[0])
-            month = int(value[1])
-            year = int(value[2])
-            self.is_valid_date(year, month, day)
-        except:
-            raise ValueError('Invalid date format')
-        self.__day = day
-        self.__month = month
-        self.__year = year
+        if isinstance(value, str):
+            value = value.split('.')
+            if len(value) != 3:
+                raise ValueError('Invalid date format, example: 23.1.2020')
+            try:
+                day = int(value[0])
+                month = int(value[1])
+                year = int(value[2])
+                self.is_valid_date(year, month, day)
+            except:
+                raise ValueError('Invalid date format')
+            self.__day = day
+            self.__month = month
+            self.__year = year
+        if isinstance(value, tuple):
+            try:
+                self.is_valid_date(value[0], value[1], value[2])
+            except:
+                raise ValueError('Invalid date format, date must be (2020, 12, 30)')
+            self.__day = value[2]
+            self.__month = value[1]
+            self.__year = value[0]
+
 
     @property
     def day(self):
@@ -299,9 +300,6 @@ class Date:
 
     def __radd__(self, other):
         return other + self.days_of_date()
-
-    def __rsub__(self, other):
-        return other.days_of_date() - self.days_of_date()
 
     def __iadd__(self, other: int):
         if not isinstance(other, int):
