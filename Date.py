@@ -2,24 +2,8 @@
 # coding: utf-8
 # Слушатель (ФИО): Гульчак С.В.
 
-
-
-# Разработка класса данных
-# Примеры:
-# date = Date(2018, 11, 23)
-# print(date) # 23.11.2018
-# repr(date)  # Date(2018, 11, 23)
-
-# date = Date(2018, 11, 31)
-
-# date.date = '31.11.2018'
-# print(date.date) # '31.11.2018'
-
-# date.day   = 31 # Запрет
-# date.month = 50 # 
-# date.month = 11 # 02 -> 01.03
-# date.year       # на след. месяц
 import datetime
+
 
 class Date:
     """
